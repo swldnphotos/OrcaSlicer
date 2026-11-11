@@ -519,6 +519,7 @@ public:
     void set_filament_count(int filament_count);
     void on_filament_added();
     void on_filament_deleted(int filament_count, int filament_id);
+    void detach_plater();
 
     friend class cereal::access;
     friend class UndoRedo::StackImpl;
@@ -700,6 +701,7 @@ public:
 
     //reset partplate to init states
     void reinit();
+    void detach_plater();
 
     //get the plate stride
     double plate_stride_x();

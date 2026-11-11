@@ -6,7 +6,14 @@
 #include <map>
 #include <vector>
 
-#include "libslic3r/AppConfig.hpp"
+#ifndef BAMBU_NETWORK_AGENT_VERSION
+#define BAMBU_NETWORK_AGENT_VERSION "02.05.02.58"
+#endif
+
+#ifndef BAMBU_NETWORK_AGENT_VERSION_LEGACY
+#define BAMBU_NETWORK_AGENT_VERSION_LEGACY BAMBU_NETWORK_AGENT_VERSION
+#endif
+
 extern std::string g_log_folder;
 extern std::string g_log_start_time;
 
@@ -115,6 +122,8 @@ namespace Slic3r {
 #define IOT_JSON_KEY_FILAMENT_ID        "filament_id"
 #define IOT_JSON_KEY_USER_ID            "user_id"
 
+// user callbacks (still used by the PJarczak bridge forwarder)
+typedef std::function<void(int online_login, bool login)> OnUserLoginFn;
 // printer callbacks
 typedef std::function<void(std::string topic_str)>  OnPrinterConnectedFn;
 typedef std::function<void(int status, std::string dev_id, std::string msg)> OnLocalConnectedFn;
@@ -275,6 +284,7 @@ struct PrintParams {
     int             auto_bed_leveling{ 0 };
     int             auto_flow_cali{ 0 };
     int             auto_offset_cali{ 0 };
+    int             extruder_cali_manual_mode{-1};
     bool            task_ext_change_assist;
     bool            try_emmc_print;
 };
@@ -313,10 +323,7 @@ struct NetworkLibraryVersion {
 };
 
 static const NetworkLibraryVersion AVAILABLE_NETWORK_VERSIONS[] = {
-    {"02.03.00.62", "02.03.00.62", nullptr, true, nullptr},
-    {"02.01.01.52", "02.01.01.52", nullptr, false, nullptr},
-    {"02.00.02.50", "02.00.02.50", nullptr, false, "This version may crash on startup due to Bambu Lab's signature verification."},
-    {BAMBU_NETWORK_AGENT_VERSION_LEGACY, BAMBU_NETWORK_AGENT_VERSION_LEGACY " (legacy)", nullptr, false, nullptr},
+    {BAMBU_NETWORK_AGENT_VERSION, BAMBU_NETWORK_AGENT_VERSION, nullptr, true, nullptr},
 };
 
 static const size_t AVAILABLE_NETWORK_VERSIONS_COUNT = sizeof(AVAILABLE_NETWORK_VERSIONS) / sizeof(AVAILABLE_NETWORK_VERSIONS[0]);
@@ -386,5 +393,7 @@ enum class MessageFlag : int
 };
 
 }
+
+namespace BBL = Slic3r;
 
 #endif
