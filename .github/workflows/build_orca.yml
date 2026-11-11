@@ -140,6 +140,21 @@ jobs:
           sudo rm -rf ~/Library/Developer/CoreSimulator/Caches/*
           df -hI /
 
+      - name: Download linux bridge host runtime
+        if: runner.os == 'macOS' && !inputs.macos-combine-only
+        uses: actions/download-artifact@v8
+        with:
+          name: linux_host_runtime_${{ github.sha }}
+          path: ${{ github.workspace }}/linux_host_runtime_artifact
+
+      - name: Extract linux bridge host runtime
+        if: runner.os == 'macOS' && !inputs.macos-combine-only
+        shell: bash
+        run: |
+          mkdir -p "$GITHUB_WORKSPACE/tools/pjarczak_bambu_linux_host/runtime"
+          tar -xzf "$GITHUB_WORKSPACE/linux_host_runtime_artifact/linux_host_runtime_${{ github.sha }}.tar.gz" -C "$GITHUB_WORKSPACE/tools/pjarczak_bambu_linux_host/runtime"
+          ls -la "$GITHUB_WORKSPACE/tools/pjarczak_bambu_linux_host/runtime/linux-x86_64"
+
       - name: Build slicer mac
         if: runner.os == 'macOS' && !inputs.macos-combine-only
         working-directory: ${{ github.workspace }}
