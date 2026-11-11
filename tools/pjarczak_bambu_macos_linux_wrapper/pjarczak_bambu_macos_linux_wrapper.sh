@@ -1,4 +1,5 @@
 #!/bin/sh
+# shellcheck disable=SC1007,SC2034,SC2086
 set -eu
 
 HOST_PATH="${1:-}"

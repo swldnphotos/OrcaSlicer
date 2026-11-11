@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck disable=SC1007,SC2034,SC2086
 set -euo pipefail
 
 PACKAGE_DIR=""

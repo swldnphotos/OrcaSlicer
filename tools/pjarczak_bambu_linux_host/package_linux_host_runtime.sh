@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC1007,SC2034,SC2086
 set -euo pipefail
 
 SCRIPT_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
