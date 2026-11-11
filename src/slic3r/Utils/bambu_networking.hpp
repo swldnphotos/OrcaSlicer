@@ -6,6 +6,7 @@
 #include <map>
 #include <vector>
 
+// Network plugin version the PJarczak bridge is built and tested against (pinned by FULU).
 #ifndef BAMBU_NETWORK_AGENT_VERSION
 #define BAMBU_NETWORK_AGENT_VERSION "02.05.02.58"
 #endif
