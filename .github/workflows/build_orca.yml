@@ -180,7 +180,8 @@ jobs:
           gzip -k build_slicer.log
 
       - name: Upload build log
-        if: always() && runner.os == 'macOS' && !inputs.macos-combine-only
+        # Not always(): after a cancellation this step hung and held up the re-run.
+        if: ${{ !cancelled() && runner.os == 'macOS' && !inputs.macos-combine-only }}
         uses: actions/upload-artifact@v7
         with:
           name: build-log-${{ inputs.arch }}-${{ github.run_attempt }}
